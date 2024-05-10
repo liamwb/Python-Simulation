@@ -47,7 +47,20 @@ def transition_probability_p_k(k: int, sigma: nx.Graph, w: int, d: int, beta: fl
 def compute_transition_probabilities(sigma: nx.Graph, w: int, d: int, beta: float) -> dict:
     result = dict()
     for k in range(-d, d+1):
+        if k == 0:
+            continue
+    
         p_k = transition_probability_p_k(k, sigma, w, d, beta)
         result[k] = p_k
     
     return result
+
+def choose_new_spin(transition_probabilities: dict, d: int):
+    u = np.random.rand()  # uniform random number from [0, 1)
+    culmulative_prob = 0.0
+    for k in range(-d, d+1):
+        if k == 0:
+            continue
+        culmulative_prob += transition_probabilities[k]
+        if u <= culmulative_prob:
+            return get_e_k(k, d)
