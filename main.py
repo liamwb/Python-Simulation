@@ -19,8 +19,6 @@ for vertex in graph.nodes:
 # Prepare custom labels
 spin_labels = {node: label_from_vector(data['spin']) for node, data in graph.nodes(data=True)}
 
-# test comment for test commit and test push
-
 # Draw the graph
 pos = nx.spring_layout(graph)  # positions for all nodes
 nx.draw(graph, pos, with_labels=False, node_size=2000, node_color="skyblue")
