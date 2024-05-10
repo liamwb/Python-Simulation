@@ -18,10 +18,11 @@ def get_e_k(k: int, d: int):
     e_k[abs(k)-1] = 1.0 * np.sign(k) # type: ignore
     return e_k
 
-def neighbouring_spins_S(k: int, sigma: nx.Graph, w: int):
-    nbhrs = sigma.adj[w]
+def neighbouring_spins_S(sigma: nx.Graph, w: int):
+    return sum([sigma.nodes[nbhr]["spin"] for nbhr in sigma.neighbors(w)])
 
-    return sum([sigma.nodes[nbhr]["spin"] for nbhr in sigma.neighbors(k)])
+def choose_vertex(sigma: nx.Graph):
+    return np.random.choice(list(sigma.nodes))
 
 def transition_probability_p_k(k: int, sigma: nx.Graph, w: int, d: int, beta: float):
     """returns the probability that the vertex w has its spin updated to e_k.
@@ -36,7 +37,17 @@ def transition_probability_p_k(k: int, sigma: nx.Graph, w: int, d: int, beta: fl
     Returns:
         probability: float
     """
-    return # exp() / exp()
 
-def simulate_one_step(graph: nx.Graph):
-    pass
+    numerator = exp(beta * np.dot(get_e_k(k, d), neighbouring_spins_S(sigma, w))  )
+    denominator = sum([ exp(beta * np.dot(get_e_k(k, d), neighbouring_spins_S(sigma, w))) for k in range(-d, d+1)])
+
+    return  numerator/denominator 
+
+
+def compute_transition_probabilities(sigma: nx.Graph, w: int, d: int, beta: float) -> dict:
+    result = dict()
+    for k in range(-d, d+1):
+        p_k = transition_probability_p_k(k, sigma, w, d, beta)
+        result[k] = p_k
+    
+    return result
