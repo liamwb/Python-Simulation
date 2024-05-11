@@ -7,8 +7,8 @@ from maths_util import *
 from qol_util import *
 
 # change these values to change the number of vertices and the dimension respectively
-n =  7 
-d = 3 
+n =  5
+d = 3
 
 graph = nx.complete_graph(n)
 spin_set = [get_e_k(i+1, d) for i in range(d)] + [get_e_k(-i-1, d) for i in range(d)]
@@ -61,14 +61,16 @@ def redraw_graph(button_text, highlight_vertex):
     plt.draw()
 
 def redraw_table(cellText=[[f"{get_e_k(k,d)}", ""] for k in range(-d,d+1) if k != 0]):
+    global table, table_ax
+    table_ax.clear()
+    table_ax.axis('off')
+
     # Draw the table in the second subplot
     table = table_ax.table(
     cellText=cellText,
     colLabels=["Spin", "Probability"],
     loc="center",
     )
-# Hide axes for the table subplot
-table_ax.axis('off')
 
 def on_button_click(event):
     global state, w, button, probabilities
