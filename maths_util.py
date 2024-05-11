@@ -39,7 +39,7 @@ def transition_probability_p_k(k: int, sigma: nx.Graph, w: int, d: int, beta: fl
     """
 
     numerator = exp(beta * np.dot(get_e_k(k, d), neighbouring_spins_S(sigma, w))  )
-    denominator = sum([ exp(beta * np.dot(get_e_k(k, d), neighbouring_spins_S(sigma, w))) for k in range(-d, d+1)])
+    denominator = sum([ exp(beta * np.dot(get_e_k(k, d), neighbouring_spins_S(sigma, w))) for k in range(-d, d+1) if k != 0] )
 
     return  numerator/denominator 
 
